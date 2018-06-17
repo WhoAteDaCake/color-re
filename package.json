@@ -4,15 +4,17 @@
   "description": "Reason color converter",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reasonml-community/bs-webapi-incubator.git"
+    "url": "git+https://github.com/WhoAteDaCake/color-re.git"
   },
-  "homepage": "https://github.com/reasonml-community/bs-webapi-incubator#readme",
+  "homepage": "https://github.com/WhoAteDaCake/color-re#readme",
   "main": "index.js",
   "keywords": [
     "reason",
     "bucklescript",
-    "web",
-    "dom"
+    "color",
+    "rbg",
+    "hex",
+    "hsl"
   ],
   "scripts": {
     "build": "bsb -make-world",
