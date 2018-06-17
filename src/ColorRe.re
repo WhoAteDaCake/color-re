@@ -74,31 +74,34 @@ let rgbToHsl = rgbOpt =>
   | None => None
   | Some((r1, g1, b1)) =>
     let rgb = [r1, g1, b1] |> List.map(n => float_of_int(n) /. 255.0);
-    let [r, g, b] = rgb;
-    let mx = max(rgb);
-    let mn = min(rgb);
-    let l = (mx +. mn) /. 2.0;
-    let (h, s) =
-      if (mx == mn) {
-        (0.0, 0.0);
-      } else {
-        let d = mx -. mn;
-        let s = l > 0.5 ? d /. (2.0 -. mx -. mn) : d /. (mx +. mn);
-        let h =
-          if (r > g && r > b) {
-            (g -. b) /. d +. (g < b ? 6.0 : 0.0);
-          } else if (g > b) {
-            (b -. r) /. d +. 2.0;
-          } else {
-            (r -. g) /. d +. 4.0;
-          };
-        (h /. 6.0, s);
-      };
-    Some((
-      Pervasives.int_of_float(h *. 360.0),
-      Pervasives.int_of_float(s *. 100.0),
-      Pervasives.int_of_float(l *. 100.0)
-    ));
+    switch rgb {
+    | [r, g, b] =>
+      let mx = max(rgb);
+      let mn = min(rgb);
+      let l = (mx +. mn) /. 2.0;
+      let (h, s) =
+        if (mx == mn) {
+          (0.0, 0.0);
+        } else {
+          let d = mx -. mn;
+          let s = l > 0.5 ? d /. (2.0 -. mx -. mn) : d /. (mx +. mn);
+          let h =
+            if (r > g && r > b) {
+              (g -. b) /. d +. (g < b ? 6.0 : 0.0);
+            } else if (g > b) {
+              (b -. r) /. d +. 2.0;
+            } else {
+              (r -. g) /. d +. 4.0;
+            };
+          (h /. 6.0, s);
+        };
+      Some((
+        Pervasives.int_of_float(h *. 360.0),
+        Pervasives.int_of_float(s *. 100.0),
+        Pervasives.int_of_float(l *. 100.0)
+      ));
+    | _ => None
+    };
   };
 
 let rgbaToHsla = rgbaOpt =>
