@@ -1,22 +1,11 @@
 {
-  "name": "reason-scripts",
+  "name": "color-re",
+  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
   "sources": [
-    "src"
+    {
+      "dir": "src",
+      "subdirs": true
+    }
   ],
-  "bs-dependencies": [
-    "reason-react",
-    "@glennsl/bs-jest"
-  ],
-  "reason": {
-    "react-jsx": 2
-  },
-  "bsc-flags": [
-    "-bs-super-errors"
-  ],
-  "refmt": 3,
-  "package-specs": {
-    "module": "es6",
-    "in-source": true
-  },
-  "suffix": ".bs.js"
+  "refmt": 3
 }
