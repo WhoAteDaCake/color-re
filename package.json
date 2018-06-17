@@ -1,0 +1,32 @@
+{
+  "name": "color-re",
+  "version": "0.0.1",
+  "description": "Reason color converter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reasonml-community/bs-webapi-incubator.git"
+  },
+  "homepage": "https://github.com/reasonml-community/bs-webapi-incubator#readme",
+  "main": "index.js",
+  "keywords": [
+    "reason",
+    "bucklescript",
+    "web",
+    "dom"
+  ],
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world",
+    "test": "bsb -make-world"
+  },
+  "files": [
+    "src/",
+    "bsconfig.json"
+  ],
+  "author": "whoatedacake",
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "^3.0.0"
+  }
+}
