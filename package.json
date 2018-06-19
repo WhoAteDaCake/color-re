@@ -1,6 +1,6 @@
 {
   "name": "color-re",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Reason color converter",
   "repository": {
     "type": "git",
