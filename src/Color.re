@@ -121,7 +121,7 @@ module Hsv = {
     | 2 => (p, v, t)
     | 3 => (p, q, v)
     | 4 => (t, p, v)
-    /* Because of module will never be over 5, but to stop compiler warning we do this */
+    /* Because of modulo will never be over 5, but to stop compiler warning we do this */
     | _ => (v, p, q)
     };
   };
@@ -136,6 +136,19 @@ module Hsv = {
     let sl = sl /. (lmin <= 1.0 ? lmin : 2.0 -. lmin);
     let l = l /. 2.0;
     (h, sl *. 100.0, l *. 100.0);
+  };
+};
+
+module Hex = {
+  let toChunks = hex =>
+    Utils.splitToChunks(2, hex) |> List.map(Utils.hexStrToInt);
+  let toRgb = hex => {
+    let [rHex, gHex, bHex] = toChunks(hex);
+    Utils.floated((rHex, gHex, bHex));
+  };
+  let toHsl = hex => {
+    let [rHex, gHex, bHex] = toChunks(hex);
+    Rgb.toHsl((rHex, gHex, bHex));
   };
 };
 
@@ -158,6 +171,12 @@ let toHslAux = color =>
     let (h, s, l) = Rgb.toHsl((r, g, b)) |> Utils.defloat;
     {opacity: color.opacity, value: Hsl(h, s, l)};
   | Hsl(_h, _s, _l) => color
+  | Hsv(h, s, v) =>
+    let (h, s, l) = Hsv.toHsl((h, s, v)) |> Utils.defloat;
+    {opacity: color.opacity, value: Hsl(h, s, l)};
+  | Hex(hex) =>
+    let (h, s, l) = Hex.toHsl(hex) |> Utils.defloat;
+    {opacity: color.opacity, value: Hsl(h, s, l)};
   | _ => color
   };
 
@@ -184,7 +203,7 @@ let toString = color =>
     | Rgb(r, g, b) =>
       Printf.sprintf("rgba(%d, %d, %d, %f)", r, g, b, color.opacity)
     | Hsl(h, s, l) =>
-      Printf.sprintf("hsl(%d, %d, %d, %.2f)", h, s, l, color.opacity)
+      Printf.sprintf("hsla(%d, %d%%, %d%%, %.2f)", h, s, l, color.opacity)
     | Hex(str) =>
       if (color.opacity == 1.0) {
         str;

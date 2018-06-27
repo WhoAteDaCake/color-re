@@ -14,6 +14,18 @@ let rec repeatStringAux = (n, string, acc) =>
 
 let repeatString = (n, string) => repeatStringAux(n, string, "");
 
+let rec splitToChunksAux = (size, str, acc) =>
+  if (String.length(str) == 0) {
+    acc;
+  } else {
+    let part = Js.String.slice(~from=0, ~to_=size, str);
+    let rest = Js.String.sliceToEnd(~from=size, str);
+    splitToChunksAux(size, rest, List.append(acc, [part]));
+  };
+
+let splitToChunks = (n: int, str: string) : list(string) =>
+  splitToChunksAux(n, str, []);
+
 let hexRe = [%bs.re "/^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i"];
 
 let hexStrToInt = n => Pervasives.int_of_string("0x" ++ n);
