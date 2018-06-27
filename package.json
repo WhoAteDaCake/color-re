@@ -20,7 +20,7 @@
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
-    "test": "bsb -make-world"
+    "test": "yarn build && jest --config=jest.json --maxWorkers=4"
   },
   "files": [
     "src/",
@@ -29,6 +29,9 @@
   "author": "whoatedacake",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "^3.0.0"
+    "@glennsl/bs-jest": "^0.4.2",
+    "bs-jest": "^0.3.2",
+    "bs-platform": "^3.0.0",
+    "jest": "^23.2.0"
   }
 }

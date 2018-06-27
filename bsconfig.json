@@ -1,11 +1,18 @@
 {
   "name": "color-re",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
+  "version": "1.0.0",
   "sources": [
     {
       "dir": "src",
       "subdirs": true
+    },
+    {
+      "dir": "tests",
+      "subdirs": false,
+      "type": "dev"
     }
   ],
-  "refmt": 3
+  "refmt": 3,
+  "bs-dev-dependencies": ["@glennsl/bs-jest"]
 }
