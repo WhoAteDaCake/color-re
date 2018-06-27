@@ -37,7 +37,6 @@ let hex3To6 = str =>
     str;
   };
 
-/* q - t2, p - q1, t =3 */
 let hueToRgb = (p, q, t) => {
   let t = t < 0.0 ? t +. 1.0 : t;
   let t = t > 1.0 ? t -. 1.0 : t;
