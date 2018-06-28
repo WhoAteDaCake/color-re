@@ -258,24 +258,20 @@ let opacity = (value, color) =>
   Belt.Option.map(color, color => {...color, opacity: inOpacityRange(value)});
 
 let opaquer = (ratio, color) =>
-  switch color {
-  | Some(color) =>
-    Some({
+  Belt.Option.map(color, color =>
+    {
       value: color.value,
       opacity: inOpacityRange(color.opacity +. color.opacity *. ratio)
-    })
-  | None => None
-  };
+    }
+  );
 
 let fade = (ratio, color) =>
-  switch color {
-  | Some(color) =>
-    Some({
+  Belt.Option.map(color, color =>
+    {
       value: color.value,
       opacity: inOpacityRange(color.opacity -. color.opacity *. ratio)
-    })
-  | None => None
-  };
+    }
+  );
 
 /* Modifiers */
 let rec toString = color =>
