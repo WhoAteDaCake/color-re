@@ -1,5 +1,7 @@
 module Utils = UtilsRe;
 
+module Option = Belt.Option;
+
 type value =
   | Hex(string)
   | Rgb(int, int, int)
@@ -202,7 +204,7 @@ let toHslAux = color =>
   | _ => color
   };
 
-let toHsl = color => Belt.Option.map(color, toHslAux);
+let toHsl = color => Option.map(color, toHslAux);
 
 let toRgbAux = color =>
   switch color.value {
@@ -218,7 +220,7 @@ let toRgbAux = color =>
   | _ => color
   };
 
-let toRgb = color => Belt.Option.map(color, toRgbAux);
+let toRgb = color => Option.map(color, toRgbAux);
 
 let toHexAux = color =>
   switch color.value {
@@ -234,7 +236,7 @@ let toHexAux = color =>
   | _ => color
   };
 
-let toHex = color => Belt.Option.map(color, toHexAux);
+let toHex = color => Option.map(color, toHexAux);
 
 let toHsvAux = color =>
   switch color.value {
@@ -251,14 +253,14 @@ let toHsvAux = color =>
   | _ => color
   };
 
-let toHsv = color => Belt.Option.map(color, toHsvAux);
+let toHsv = color => Option.map(color, toHsvAux);
 
 /* Modifiers */
 let opacity = (value, color) =>
-  Belt.Option.map(color, color => {...color, opacity: inOpacityRange(value)});
+  Option.map(color, color => {...color, opacity: inOpacityRange(value)});
 
 let opaquer = (ratio, color) =>
-  Belt.Option.map(color, color =>
+  Option.map(color, color =>
     {
       value: color.value,
       opacity: inOpacityRange(color.opacity +. color.opacity *. ratio)
@@ -266,7 +268,7 @@ let opaquer = (ratio, color) =>
   );
 
 let fade = (ratio, color) =>
-  Belt.Option.map(color, color =>
+  Option.map(color, color =>
     {
       value: color.value,
       opacity: inOpacityRange(color.opacity -. color.opacity *. ratio)
