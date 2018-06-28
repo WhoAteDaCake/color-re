@@ -65,7 +65,7 @@ module Rgb = {
     (h, w *. 100.0, b *. 100.0);
   };
   let toHex = ((r, g, b)) =>
-    "#" ++ Utils.toHex(r) ++ Utils.toHex(g) ++ Utils.toHex(b);
+    Utils.toHex(r) ++ Utils.toHex(g) ++ Utils.toHex(b);
 };
 
 module Hsl = {
@@ -152,19 +152,6 @@ module Hex = {
   };
 };
 
-/* module Hsw => {
-     let toHsl = (color, (h, s, w)) => {
-       {
-         value:
-           Hsl(
-             Pervasives.int_of_float(h),
-             Pervasives.int_of_float(s *. 100.0),
-             Pervasives.int_of_float(l *. 100.0)
-           ),
-         opacity: color.opacity
-       };
-     };
-   }; */
 let toHslAux = color =>
   switch color.value {
   | Hex(hex) =>
@@ -192,19 +179,26 @@ let toRgbAux = color =>
   | Hsv(h, s, v) =>
     let (r, g, b) = Hsv.toRgb((h, s, v)) |> Utils.defloat;
     {opacity: color.opacity, value: Rgb(r, g, b)};
-  /* | Rgb(r, g, b) =>
-       let (h, s, l) = Rgb.toHsl((r, g, b)) |> Utils.defloat;
-       {opacity: color.opacity, value: Hsl(h, s, l)};
-     | Hsv(h, s, v) =>
-       let (h, s, l) = Hsv.toHsl((h, s, v)) |> Utils.defloat;
-       {opacity: color.opacity, value: Hsl(h, s, l)};
-     | Hex(hex) =>
-       let (h, s, l) = Hex.toHsl(hex) |> Utils.defloat;
-       {opacity: color.opacity, value: Hsl(h, s, l)}; */
   | _ => color
   };
 
 let toRgb = color => Belt.Option.map(color, toRgbAux);
+
+let toHexAux = color =>
+  switch color.value {
+  | Rgb(r, g, b) =>
+    let value = Rgb.toHex((r, g, b));
+    {opacity: color.opacity, value: Hex(value)};
+  | Hsl(h, s, l) =>
+    let value = Hsl.toRgb((h, s, l)) |> Utils.defloat |> Rgb.toHex;
+    {opacity: color.opacity, value: Hex(value)};
+  | Hsv(h, s, v) =>
+    let value = Hsv.toRgb((h, s, v)) |> Utils.defloat |> Rgb.toHex;
+    {opacity: color.opacity, value: Hex(value)};
+  | _ => color
+  };
+
+let toHex = color => Belt.Option.map(color, toHexAux);
 
 /* Modifiers */
 let opaquer = (ratio, color) =>
@@ -230,7 +224,7 @@ let toString = color =>
       Printf.sprintf("hsla(%d, %d%%, %d%%, %.2f)", h, s, l, color.opacity)
     | Hex(str) =>
       if (color.opacity == 1.0) {
-        str;
+        "#" ++ str;
       } else {
         "";
       }

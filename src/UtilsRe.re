@@ -45,9 +45,11 @@ let hex3To6 = str =>
     let second = String.sub(str, 2, 1) |> repeatString(2);
     let third = String.sub(str, 3, 1) |> repeatString(2);
     "#" ++ first ++ second ++ third;
+  } else if (String.length(str) == 7){
+    Js.String.sliceToEnd(~from=1, str);
   } else {
     str;
-  };
+  }
 
 let hueToRgb = (p, q, t) => {
   let t = t < 0.0 ? t +. 1.0 : t;
