@@ -167,20 +167,44 @@ module Hex = {
    }; */
 let toHslAux = color =>
   switch color.value {
+  | Hex(hex) =>
+    let (h, s, l) = Hex.toHsl(hex) |> Utils.defloat;
+    {opacity: color.opacity, value: Hsl(h, s, l)};
   | Rgb(r, g, b) =>
     let (h, s, l) = Rgb.toHsl((r, g, b)) |> Utils.defloat;
     {opacity: color.opacity, value: Hsl(h, s, l)};
-  | Hsl(_h, _s, _l) => color
   | Hsv(h, s, v) =>
     let (h, s, l) = Hsv.toHsl((h, s, v)) |> Utils.defloat;
-    {opacity: color.opacity, value: Hsl(h, s, l)};
-  | Hex(hex) =>
-    let (h, s, l) = Hex.toHsl(hex) |> Utils.defloat;
     {opacity: color.opacity, value: Hsl(h, s, l)};
   | _ => color
   };
 
 let toHsl = color => Belt.Option.map(color, toHslAux);
+
+let toRgbAux = color =>
+  switch color.value {
+  | Hex(hex) =>
+    let (r, g, b) = Hex.toRgb(hex) |> Utils.defloat;
+    {opacity: color.opacity, value: Rgb(r, g, b)};
+  | Hsl(h, s, l) =>
+    let (r, g, b) = Hsl.toRgb((h, s, l)) |> Utils.defloat;
+    {opacity: color.opacity, value: Rgb(r, g, b)};
+  | Hsv(h, s, v) =>
+    let (r, g, b) = Hsv.toRgb((h, s, v)) |> Utils.defloat;
+    {opacity: color.opacity, value: Rgb(r, g, b)};
+  /* | Rgb(r, g, b) =>
+       let (h, s, l) = Rgb.toHsl((r, g, b)) |> Utils.defloat;
+       {opacity: color.opacity, value: Hsl(h, s, l)};
+     | Hsv(h, s, v) =>
+       let (h, s, l) = Hsv.toHsl((h, s, v)) |> Utils.defloat;
+       {opacity: color.opacity, value: Hsl(h, s, l)};
+     | Hex(hex) =>
+       let (h, s, l) = Hex.toHsl(hex) |> Utils.defloat;
+       {opacity: color.opacity, value: Hsl(h, s, l)}; */
+  | _ => color
+  };
+
+let toRgb = color => Belt.Option.map(color, toRgbAux);
 
 /* Modifiers */
 let opaquer = (ratio, color) =>
@@ -201,7 +225,7 @@ let toString = color =>
   | Some(color) =>
     switch color.value {
     | Rgb(r, g, b) =>
-      Printf.sprintf("rgba(%d, %d, %d, %f)", r, g, b, color.opacity)
+      Printf.sprintf("rgba(%d, %d, %d, %.2f)", r, g, b, color.opacity)
     | Hsl(h, s, l) =>
       Printf.sprintf("hsla(%d, %d%%, %d%%, %.2f)", h, s, l, color.opacity)
     | Hex(str) =>
