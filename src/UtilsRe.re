@@ -76,3 +76,11 @@ let defloat = ((r, g, b)) => (
   Pervasives.int_of_float(g),
   Pervasives.int_of_float(b)
 );
+
+let inRangeOf = (v1, v2, number) => {
+  if (number >= v1 && number <= v2) {
+    number
+  } else {
+    number > v2 ? v2 : v1;
+  }
+};

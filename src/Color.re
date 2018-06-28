@@ -12,6 +12,8 @@ type color = {
   opacity: float
 };
 
+let inOpacityRange = Utils.inRangeOf(0.0, 1.0);
+
 /* Converter */
 let fromHex = hex => Some({value: Hex(Utils.hex3To6(hex)), opacity: 1.0});
 
@@ -252,19 +254,31 @@ let toHsvAux = color =>
 let toHsv = color => Belt.Option.map(color, toHsvAux);
 
 /* Modifiers */
+let opacity = (value, color) =>
+  Belt.Option.map(color, color => {...color, opacity: inOpacityRange(value)});
+
 let opaquer = (ratio, color) =>
   switch color {
-  | Some(color) => Some({value: color.value, opacity: color.opacity *. ratio})
+  | Some(color) =>
+    Some({
+      value: color.value,
+      opacity: inOpacityRange(color.opacity +. color.opacity *. ratio)
+    })
   | None => None
   };
 
 let fade = (ratio, color) =>
   switch color {
-  | Some(color) => Some({value: color.value, opacity: color.opacity *. ratio})
+  | Some(color) =>
+    Some({
+      value: color.value,
+      opacity: inOpacityRange(color.opacity -. color.opacity *. ratio)
+    })
   | None => None
   };
 
-let toString = color =>
+/* Modifiers */
+let rec toString = color =>
   switch color {
   | None => ""
   | Some(color) =>
@@ -279,7 +293,7 @@ let toString = color =>
       if (color.opacity == 1.0) {
         "#" ++ str;
       } else {
-        "";
+        toRgb(Some(color)) |> toString;
       }
     | _ => ""
     }
