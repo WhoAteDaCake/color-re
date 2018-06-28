@@ -57,6 +57,40 @@ module Rgb = {
       };
     (h, s *. 100.0, l *. 100.0);
   };
+  let toHsv = rgb => {
+    let (r, g, b) = Utils.floated(rgb);
+    let r = r /. 255.0;
+    let g = g /. 255.0;
+    let b = b /. 255.0;
+    let v = Utils.max([r, g, b]);
+    let diff = v -. Utils.min([r, g, b]);
+    if (diff == 0.0) {
+      (0.0, 0.0, v);
+    } else {
+      let s = diff /. v;
+      let diffc = c => (v -. c) /. 6.0 /. diff +. 1.0 /. 2.0;
+      let rdif = diffc(r);
+      let gdif = diffc(g);
+      let bdif = diffc(b);
+      let h =
+        if (r == v) {
+          bdif -. gdif;
+        } else if (g == v) {
+          1.0 /. 3.0 +. rdif -. bdif;
+        } else {
+          2.0 /. 3.0 +. gdif -. rdif;
+        };
+      let h =
+        if (h < 0.0) {
+          h +. 1.0;
+        } else if (h > 1.0) {
+          h -. 1.0;
+        } else {
+          h;
+        };
+      (h *. 360.0, s *. 100.0, v *. 100.0);
+    };
+  };
   let toHwb = ((rInt, gInt, bInt)) => {
     let (r, g, b) = Utils.floated((rInt, gInt, bInt));
     let (h, _s, _l) = toHsl((rInt, gInt, bInt));
@@ -200,6 +234,23 @@ let toHexAux = color =>
 
 let toHex = color => Belt.Option.map(color, toHexAux);
 
+let toHsvAux = color =>
+  switch color.value {
+  | Rgb(r, g, b) =>
+    let (h, s, v) = Rgb.toHsv((r, g, b)) |> Utils.defloat;
+    {opacity: color.opacity, value: Hsv(h, s, v)};
+  | Hsl(h, s, l) =>
+    let (h, s, v) = Hsl.toHsv((h, s, l)) |> Utils.defloat;
+    {opacity: color.opacity, value: Hsv(h, s, v)};
+  | Hex(hex) =>
+    let (h, s, v) =
+      Hex.toRgb(hex) |> Utils.defloat |> Rgb.toHsv |> Utils.defloat;
+    {opacity: color.opacity, value: Hsv(h, s, v)};
+  | _ => color
+  };
+
+let toHsv = color => Belt.Option.map(color, toHsvAux);
+
 /* Modifiers */
 let opaquer = (ratio, color) =>
   switch color {
@@ -222,6 +273,8 @@ let toString = color =>
       Printf.sprintf("rgba(%d, %d, %d, %.2f)", r, g, b, color.opacity)
     | Hsl(h, s, l) =>
       Printf.sprintf("hsla(%d, %d%%, %d%%, %.2f)", h, s, l, color.opacity)
+    | Hsv(h, s, v) =>
+      Printf.sprintf("hsva(%d, %d%%, %d%%, %.2f)", h, s, v, color.opacity)
     | Hex(str) =>
       if (color.opacity == 1.0) {
         "#" ++ str;

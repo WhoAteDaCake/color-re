@@ -16,6 +16,10 @@ describe("Color", () => {
       expect(Color.(fromRgb((200, 200, 200)) |> toHex |> toString))
       |> toBe("#c8c8c8")
     );
+    test("converting to hsv", () =>
+      expect(Color.(fromRgb((100, 150, 200)) |> toHsv |> toString))
+      |> toBe("hsva(209, 50%, 78%, 1.00)")
+    );
   });
   describe("Hsl", () => {
     test("converting to hsl", () =>
@@ -29,6 +33,10 @@ describe("Color", () => {
     test("converting to hex", () =>
       expect(Color.(fromHsl((50, 70, 80)) |> toHex |> toString))
       |> toBe("#efe3a8")
+    );
+    test("converting to hsv", () =>
+      expect(Color.(fromHsl((50, 70, 80)) |> toHsv |> toString))
+      |> toBe("hsva(50, 29%, 94%, 1.00)")
     );
   });
   describe("Hsv", () => {
@@ -44,6 +52,10 @@ describe("Color", () => {
       expect(Color.(fromHsv((300, 60, 80)) |> toHex |> toString))
       |> toBe("#cc51cc")
     );
+    test("converting to hsv", () =>
+      expect(Color.(fromHsv((300, 60, 80)) |> toHsv |> toString))
+      |> toBe("hsva(300, 60%, 80%, 1.00)")
+    );
   });
   describe("Hex", () => {
     test("converting to hsl", () =>
@@ -56,6 +68,10 @@ describe("Color", () => {
     );
     test("converting to hex", () =>
       expect(Color.(fromHex("aaffee") |> toHex |> toString)) |> toBe("#aaffee")
+    );
+    test("converting to hsv", () =>
+      expect(Color.(fromHex("aaffee") |> toHsv |> toString))
+      |> toBe("hsva(168, 33%, 100%, 1.00)")
     );
   });
 });
