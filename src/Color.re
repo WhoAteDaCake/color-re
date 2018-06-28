@@ -275,6 +275,52 @@ let fade = (ratio, color) =>
     }
   );
 
+/* luminocity */
+let luminocityChannel = chan =>
+  if (chan <= 0.03928) {
+    chan /. 12.92;
+  } else {
+    /* Need this here because when put into one line formatter breaks the equation */
+    let n1 = (chan +. 0.055) /. 1.055;
+    n1 ** 2.4;
+  };
+
+let luminosityAux = rgb => {
+  let (r, g, b) = Utils.floated(rgb);
+  let rLum = 0.2126 *. luminocityChannel(r /. 255.0);
+  let gLum = 0.7152 *. luminocityChannel(g /. 255.0);
+  let bLum = 0.0722 *. luminocityChannel(b /. 255.0);
+  rLum +. gLum +. bLum;
+};
+
+/* http://www.w3.org/TR/WCAG20/#relativeluminancedef */
+let luminosity = color =>
+  Option.map(toRgb(color), rgb =>
+    switch rgb.value {
+    | Rgb(r, g, b) => luminosityAux((r, g, b))
+    | _ => 0.0
+    }
+  );
+
+/* Contrast */
+/* http://www.w3.org/TR/WCAG20/#contrast-ratiodef */
+let contrastAux = (lum1, lum2) =>
+  if (lum1 > lum2) {
+    (lum1 +. 0.05) /. (lum2 +. 0.05);
+  } else {
+    (lum2 +. 0.05) /. (lum1 +. 0.05);
+  };
+
+let contrast = (color1, color2) =>
+  switch (luminosity(color1)) {
+  | None => None
+  | Some(lum1) =>
+    switch (luminosity(color2)) {
+    | None => None
+    | Some(lum2) => Some(contrastAux(lum1, lum2))
+    }
+  };
+
 /* Modifiers */
 let rec toString = color =>
   switch color {
