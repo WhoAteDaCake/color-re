@@ -321,6 +321,22 @@ let contrast = (color1, color2) =>
     }
   };
 
+/* YIQ equation from http://24ways.org/2010/calculating-color-contrast */
+let isDarkAux = (r, g, b) => {
+  let yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  yiq < 128;
+};
+
+let isDark = color =>
+  switch (toRgb(color)) {
+  | Some(rgb) =>
+    switch rgb.value {
+    | Rgb(r, g, b) => Some(isDarkAux(r, g, b))
+    | _ => None
+    }
+  | None => None
+  };
+
 /* Modifiers */
 let rec toString = color =>
   switch color {

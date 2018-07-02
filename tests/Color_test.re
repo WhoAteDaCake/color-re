@@ -111,14 +111,14 @@ describe("Color", () => {
       |> toBe("rgba(200, 200, 200, 1.00)")
     );
   });
-  describe("Modifiers/luminosity", () =>
+  describe("Resolvers/luminosity", () =>
     test("it should calculate luminosity", () => {
       let luminosity =
         Color.(fromRgb((200, 200, 200)) |> luminosity) |> Belt.Option.getExn;
       expect(luminosity) |> toEqual(0.5775804404296506);
     })
   );
-  describe("Modifiers/contrast", () =>
+  describe("Resolvers/contrast", () =>
     test("it should calculate contrast", () => {
       let contrast =
         Color.(fromRgb((200, 200, 200)) |> contrast(fromRgb((100, 100, 100))))
@@ -126,4 +126,16 @@ describe("Color", () => {
       expect(contrast) |> toEqual(3.53690624724583);
     })
   );
+  describe("Resolvers/isDark", () => {
+    test("it should calculate whether color is not dark", () => {
+      let isDark =
+        Color.(fromRgb((200, 200, 200)) |> isDark) |> Belt.Option.getExn;
+      expect(isDark) |> toBe(false);
+    });
+    test("it should calculate whether color is dark", () => {
+      let isDark =
+        Color.(fromRgb((100, 50, 200)) |> isDark) |> Belt.Option.getExn;
+      expect(isDark) |> toBe(true);
+    });
+  });
 });
