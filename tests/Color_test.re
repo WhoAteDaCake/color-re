@@ -5,7 +5,7 @@ open Expect;
 describe("Beta", () =>
   test("beta", () => {
     let color = Color.fromRgb((100, 100, 100));
-    expect(color) |> toBe(true);
+    expect(true) |> toBe(true);
   })
 );
 /* open Jest;

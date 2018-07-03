@@ -1,4 +1,49 @@
-let where = (fn, arr) =>
+let rec repeatStringAux = (n, string, acc) =>
+  if (n == 0) {
+    acc;
+  } else {
+    repeatStringAux(n - 1, string, acc ++ string);
+  };
+
+let repeatString = (n, string) => repeatStringAux(n, string, "");
+
+let hexStrToFloat = n => Pervasives.float_of_string("0x" ++ n);
+
+let hexPartToFloat = (n, str) => String.sub(str, n, 1)
+  |> hexStrToFloat;
+
+let hexStrToTuple = (str) => {
+  let str = Js.String.replace("#", "", str);
+  if (String.length(str) === 3) {
+    let first = String.sub(str, 0, 1)
+      |> repeatString(2) |> hexStrToFloat;
+    let second = String.sub(str, 1, 1)
+      |> repeatString(2) |> hexStrToFloat;
+    let third = String.sub(str, 2, 1)
+      |> repeatString(2) |> hexStrToFloat;
+    (first, second, third)
+  } else {
+    let first = String.sub(str, 0, 2) |> hexStrToFloat;
+    let second = String.sub(str, 2, 2) |> hexStrToFloat;
+    let third = String.sub(str, 4, 2) |> hexStrToFloat;
+    (first, second, third)
+    /*let first  = hexPartToFloat(0, str);
+    let n2 = hexPartToFloat(1, str);
+    let n3 = hexPartToFloat(2, str);
+    let n4 = hexPartToFloat(3, str);
+    let n5 = hexPartToFloat(4, str);
+    let n6 = hexPartToFloat(5, str);
+    (n1 +. n2, n3 +. n4, n5 +. n6)*/
+  }
+};
+
+let floatedTuple = ((n1, n2, n3)) => (
+  Pervasives.float_of_int(n1),
+  Pervasives.float_of_int(n2),
+  Pervasives.float_of_int(n3)
+);
+
+/*let where = (fn, arr) =>
   Belt.List.reduce(arr, List.nth(arr, 0), (a, b) => fn(a, b) ? a : b);
 
 let min = arr => where((a, b) => a < b, arr);
@@ -82,4 +127,4 @@ let inRangeOf = (v1, v2, number) =>
     number;
   } else {
     number > v2 ? v2 : v1;
-  };
+  };*/
