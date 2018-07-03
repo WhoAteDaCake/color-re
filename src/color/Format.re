@@ -1,4 +1,3 @@
-
 let toStringAux = (color: Type.color): string => {
   let (v1, v2, v3) = Utils.defloatedTuple(color.value);
   switch (color.spec) {
