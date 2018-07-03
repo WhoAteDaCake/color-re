@@ -1,3 +1,4 @@
-include ColorType;
-include FromRe;
-include ConvertRe;
+
+include Type;
+include From;
+include Convert;

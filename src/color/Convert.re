@@ -1,21 +1,40 @@
-module Utils = UtilsRe;
+module Option = Belt.Option;
 
-type t = ColorType.color;
+module Hsl = {
+ let toRgb = ((h, s, l)) => {
+   let h = h /. 360.0;
+   let s = s /. 100.0;
+   let l = l /. 100.0;
+   if (s == 0.0) {
+     let tmp = l *. 255.0;
+     (tmp, tmp, tmp);
+   } else {
+     let q = l < 0.5 ? l *. (1.0 +. s) : l +. s -. l *. s;
+     let p = 2.0 *. l -. q;
+     (
+       Utils.hueToRgb(p, q, h +. 1.0 /. 3.0) *. 255.0,
+       Utils.hueToRgb(p, q, h) *. 255.0,
+       Utils.hueToRgb(p, q, h -. 1.0 /. 3.0) *. 255.0
+     );
+   };
+ };
+};
 
-
-let toRgbAux = color => {
- let value = switch color.spec {
-  | Hex => 
-/* | Hex(hex) =>
-   let (r, g, b) = Hex.toRgb(hex) |> Utils.defloat;
-   {opacity: color.opacity, value: Rgb(r, g, b)};
- | Hsl(h, s, l) =>
-   let (r, g, b) = Hsl.toRgb((h, s, l)) |> Utils.defloat;
-   {opacity: color.opacity, value: Rgb(r, g, b)};
- | Hsv(h, s, v) =>
-   let (r, g, b) = Hsv.toRgb((h, s, v)) |> Utils.defloat;
-   {opacity: color.opacity, value: Rgb(r, g, b)};*/
- | _ => color
+let toRgbAux = (color: Type.color): Type.color => {
+  let value = switch color.spec {
+    | Hex => color.value
+    | Rgb => color.value
+    | Hsl => Hsl.toRgb(color.value)
+    | _ => color.value
+  /* | Hex(hex) =>
+     let (r, g, b) = Hex.toRgb(hex) |> Utils.defloat;
+     {opacity: color.opacity, value: Rgb(r, g, b)};
+   | Hsl(h, s, l) =>
+     let (r, g, b) = Hsl.toRgb((h, s, l)) |> Utils.defloat;
+     {opacity: color.opacity, value: Rgb(r, g, b)};
+   | Hsv(h, s, v) =>
+     let (r, g, b) = Hsv.toRgb((h, s, v)) |> Utils.defloat;
+     {opacity: color.opacity, value: Rgb(r, g, b)};*/
   };
   { opacity: color.opacity, spec: Rgb, value}
 };

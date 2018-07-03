@@ -1,3 +1,9 @@
+let floatedTuple = ((n1, n2, n3)) => (
+  Pervasives.float_of_int(n1),
+  Pervasives.float_of_int(n2),
+  Pervasives.float_of_int(n3)
+);
+
 let rec repeatStringAux = (n, string, acc) =>
   if (n == 0) {
     acc;
@@ -27,21 +33,23 @@ let hexStrToTuple = (str) => {
     let second = String.sub(str, 2, 2) |> hexStrToFloat;
     let third = String.sub(str, 4, 2) |> hexStrToFloat;
     (first, second, third)
-    /*let first  = hexPartToFloat(0, str);
-    let n2 = hexPartToFloat(1, str);
-    let n3 = hexPartToFloat(2, str);
-    let n4 = hexPartToFloat(3, str);
-    let n5 = hexPartToFloat(4, str);
-    let n6 = hexPartToFloat(5, str);
-    (n1 +. n2, n3 +. n4, n5 +. n6)*/
   }
 };
 
-let floatedTuple = ((n1, n2, n3)) => (
-  Pervasives.float_of_int(n1),
-  Pervasives.float_of_int(n2),
-  Pervasives.float_of_int(n3)
-);
+let hueToRgb = (p, q, t) => {
+  let t = t < 0.0 ? t +. 1.0 : t;
+  let t = t > 1.0 ? t -. 1.0 : t;
+  if (t < 1.0 /. 6.0) {
+    p +. (q -. p) *. 6.0 *. t;
+  } else if (t < 0.5) {
+    q; /* t2 */
+  } else if (t < 2.0 /. 3.0) {
+    p +. (q -. p) *. (2.0 /. 3.0 -. t) *. 0.6;
+  } else {
+    p;
+  };
+};
+
 
 /*let where = (fn, arr) =>
   Belt.List.reduce(arr, List.nth(arr, 0), (a, b) => fn(a, b) ? a : b);
@@ -96,19 +104,6 @@ let hex3To6 = str =>
     str;
   };
 
-let hueToRgb = (p, q, t) => {
-  let t = t < 0.0 ? t +. 1.0 : t;
-  let t = t > 1.0 ? t -. 1.0 : t;
-  if (t < 1.0 /. 6.0) {
-    p +. (q -. p) *. 6.0 *. t;
-  } else if (t < 0.5) {
-    q; /* t2 */
-  } else if (t < 2.0 /. 3.0) {
-    p +. (q -. p) *. (2.0 /. 3.0 -. t) *. 0.6;
-  } else {
-    p;
-  };
-};
 
 let floated = ((r, g, b)) => (
   Pervasives.float_of_int(r),
