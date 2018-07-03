@@ -18,6 +18,7 @@ describe("Properties", () => {
      expect(contrast) |> toEqual(3.53690624724583);
    })
  );
+
  describe("isDark", () => {
    test("it should calculate whether color is not dark", () => {
      let isDark =
@@ -28,6 +29,18 @@ describe("Properties", () => {
      let isDark =
        Color.(fromRgb((100, 50, 200)) |> isDark) |> Belt.Option.getExn;
      expect(isDark) |> toBe(true);
+   });
+ });
+ describe("isLight", () => {
+   test("it should calculate whether color is light", () => {
+     let isDark =
+       Color.(fromRgb((200, 200, 200)) |> isLight) |> Belt.Option.getExn;
+     expect(isDark) |> toBe(true);
+   });
+   test("it should calculate whether color is not light", () => {
+     let isDark =
+       Color.(fromRgb((100, 50, 200)) |> isLight) |> Belt.Option.getExn;
+     expect(isDark) |> toBe(false);
    });
  });
 });

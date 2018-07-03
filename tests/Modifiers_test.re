@@ -40,4 +40,18 @@ describe("Modifiers", () => {
      |> toBe("rgba(200, 200, 200, 1.00)")
    );
  });
+ describe("negate", () => {
+   test("it should negate colors", () =>
+     expect(
+       Color.(
+         fromRgb((200, 200, 200)) |> negate |> toString
+       )
+     )
+     |> toBe("rgba(55, 55, 55, 1.00)")
+   );
+   test("it keep original color after negation", () =>
+     expect(Color.(fromHsl((50, 70, 80)) |> negate |> toString))
+     |> toBe("hsla(230, 70%, 19%, 1.00)")
+   );
+ });
 });
