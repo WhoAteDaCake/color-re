@@ -3,6 +3,13 @@ let min = arr => where((a, b) => a < b, arr);
 let max = arr => where((a, b) => a > b, arr);
 
 
+let inRangeOf = (v1, v2, number) =>
+  if (number >= v1 && number <= v2) {
+    number;
+  } else {
+    number > v2 ? v2 : v1;
+  };
+
 let floatedTuple = ((n1, n2, n3)) => (
   Pervasives.float_of_int(n1),
   Pervasives.float_of_int(n2),
@@ -128,9 +135,4 @@ let defloat = ((r, g, b)) => (
   Pervasives.int_of_float(b)
 );
 
-let inRangeOf = (v1, v2, number) =>
-  if (number >= v1 && number <= v2) {
-    number;
-  } else {
-    number > v2 ? v2 : v1;
-  };*/
+*/
