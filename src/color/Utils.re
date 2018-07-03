@@ -1,7 +1,18 @@
+let where = (fn, arr) => Belt.List.reduce(arr, List.nth(arr, 0), (a, b) => fn(a, b) ? a : b);
+let min = arr => where((a, b) => a < b, arr);
+let max = arr => where((a, b) => a > b, arr);
+
+
 let floatedTuple = ((n1, n2, n3)) => (
   Pervasives.float_of_int(n1),
   Pervasives.float_of_int(n2),
   Pervasives.float_of_int(n3)
+);
+
+let defloatedTuple = ((r, g, b)) => (
+  Pervasives.int_of_float(r),
+  Pervasives.int_of_float(g),
+  Pervasives.int_of_float(b)
 );
 
 let rec repeatStringAux = (n, string, acc) =>

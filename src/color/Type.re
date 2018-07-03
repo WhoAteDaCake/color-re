@@ -2,7 +2,6 @@ type spec =
   | Hex
   | Rgb
   | Hsl
-  | Hsw
   | Hsv;
 
 type color = {
