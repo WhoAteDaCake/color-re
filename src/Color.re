@@ -1,1 +1,1 @@
-open Contents;
+include Contents;

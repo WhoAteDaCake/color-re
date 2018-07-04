@@ -1,6 +1,6 @@
 module Option = Belt.Option;
 
-module Hex ={
+module Hex = {
   /* Because rgb and hex are stored in same format */
   let toRgb = hex => hex;
 };
@@ -80,7 +80,7 @@ module Rgb = {
 };
 
 module Hsv = {
-  let toRgb = ((h , s, v)) => {
+  let toRgb = ((h, s, v)) => {
     let h = h /. 60.0;
     let s = s /. 100.0;
     let v = v /. 100.0;
@@ -90,7 +90,7 @@ module Hsv = {
     let q = 255.0 *. v *. (1.0 -. s *. f);
     let t = 255.0 *. v *. (1.0 -. s *. (1.0 -. f));
     let v = v *. 255.0;
-    switch hi {
+    switch (hi) {
     | 0 => (v, t, p)
     | 1 => (q, v, p)
     | 2 => (p, v, t)
@@ -114,24 +114,24 @@ module Hsv = {
 };
 
 module Hsl = {
- let toRgb = ((h, s, l)) => {
-   let h = h /. 360.0;
-   let s = s /. 100.0;
-   let l = l /. 100.0;
-   if (s == 0.0) {
-     let tmp = l *. 255.0;
-     (tmp, tmp, tmp);
-   } else {
-     let q = l < 0.5 ? l *. (1.0 +. s) : l +. s -. l *. s;
-     let p = 2.0 *. l -. q;
-     (
-       Utils.hueToRgb(p, q, h +. 1.0 /. 3.0) *. 255.0,
-       Utils.hueToRgb(p, q, h) *. 255.0,
-       Utils.hueToRgb(p, q, h -. 1.0 /. 3.0) *. 255.0
-     );
-   };
- };
- let toHsv = ((h, s, l)) => {
+  let toRgb = ((h, s, l)) => {
+    let h = h /. 360.0;
+    let s = s /. 100.0;
+    let l = l /. 100.0;
+    if (s == 0.0) {
+      let tmp = l *. 255.0;
+      (tmp, tmp, tmp);
+    } else {
+      let q = l < 0.5 ? l *. (1.0 +. s) : l +. s -. l *. s;
+      let p = 2.0 *. l -. q;
+      (
+        Utils.hueToRgb(p, q, h +. 1.0 /. 3.0) *. 255.0,
+        Utils.hueToRgb(p, q, h) *. 255.0,
+        Utils.hueToRgb(p, q, h -. 1.0 /. 3.0) *. 255.0,
+      );
+    };
+  };
+  let toHsv = ((h, s, l)) => {
     let s = s /. 100.0;
     let l = l /. 100.0;
     let smin = s;
@@ -146,48 +146,50 @@ module Hsl = {
   };
 };
 
-let toRgbAux = (color: Type.color): Type.color => {
-  let value = switch color.spec {
+let toRgbAux = (color: Type.color) : Type.color => {
+  let value =
+    switch (color.spec) {
     | Hex => Hex.toRgb(color.value)
     | Rgb => color.value
     | Hsl => Hsl.toRgb(color.value)
     | Hsv => Hsv.toRgb(color.value)
-  };
-  { opacity: color.opacity, spec: Rgb, value }
+    };
+  {opacity: color.opacity, spec: Rgb, value};
 };
 let toRgb = color => Option.map(color, toRgbAux);
 
-
-let toHslAux = (color: Type.color): Type.color => {
-  let value = switch (color.spec) {
-    | Hex => Hex.toRgb(color.value) |> Rgb.toHsl;
+let toHslAux = (color: Type.color) : Type.color => {
+  let value =
+    switch (color.spec) {
+    | Hex => Hex.toRgb(color.value) |> Rgb.toHsl
     | Rgb => Rgb.toHsl(color.value)
     | Hsl => color.value
     | Hsv => Hsv.toHsl(color.value)
-  };
-  { opacity: color.opacity, spec: Hsl, value }
+    };
+  {opacity: color.opacity, spec: Hsl, value};
 };
 let toHsl = color => Option.map(color, toHslAux);
 
-let toHexAux = (color: Type.color): Type.color => {
-  let value = switch (color.spec) {
-    | Hex => color.value;
+let toHexAux = (color: Type.color) : Type.color => {
+  let value =
+    switch (color.spec) {
+    | Hex => color.value
     | Rgb => Rgb.toHex(color.value)
     | Hsl => Hsl.toRgb(color.value) |> Rgb.toHex
     | Hsv => Hsv.toRgb(color.value) |> Rgb.toHex
-  };
-  { opacity: color.opacity, spec: Hex, value }
+    };
+  {opacity: color.opacity, spec: Hex, value};
 };
 let toHex = color => Option.map(color, toHexAux);
 
-
-let toHsvAux = (color: Type.color): Type.color => {
-  let value = switch (color.spec) {
-    | Hex => Hex.toRgb(color.value) |> Rgb.toHsv;
+let toHsvAux = (color: Type.color) : Type.color => {
+  let value =
+    switch (color.spec) {
+    | Hex => Hex.toRgb(color.value) |> Rgb.toHsv
     | Rgb => Rgb.toHsv(color.value)
     | Hsl => Hsl.toHsv(color.value)
     | Hsv => color.value
-  };
-  { opacity: color.opacity, spec: Hsv, value }
+    };
+  {opacity: color.opacity, spec: Hsv, value};
 };
 let toHsv = color => Option.map(color, toHsvAux);

@@ -7,7 +7,7 @@ let luminocityChannel = chan =>
     n1 ** 2.4;
   };
 
-let luminosityAux = (color: Type.color): float => {
+let luminosityAux = (color: Type.color) : float => {
   let (r, g, b) = color.value;
   let rLum = 0.2126 *. luminocityChannel(r /. 255.0);
   let gLum = 0.7152 *. luminocityChannel(g /. 255.0);
@@ -30,20 +30,38 @@ let contrastAux = (lum1, lum2) =>
 let contrast = (color1, color2) =>
   switch (luminosity(color1)) {
   | None => None
-  | Some(lum1) => switch (luminosity(color2)) {
+  | Some(lum1) =>
+    switch (luminosity(color2)) {
     | None => None
     | Some(lum2) => Some(contrastAux(lum1, lum2))
     }
   };
 
-let isDarkAux = (color: Type.color): bool => {
+let isDarkAux = (color: Type.color) : bool => {
   let (r, g, b) = color.value;
   let yiq = (r *. 299.0 +. g *. 587.0 +. b *. 114.0) /. 1000.0;
   yiq < 128.0;
 };
 
 /* YIQ equation from http://24ways.org/2010/calculating-color-contrast */
-let isDark = color =>
-  Belt.Option.map(Convert.toRgb(color), isDarkAux);
+let isDark = color => Belt.Option.map(Convert.toRgb(color), isDarkAux);
 
 let isLight = color => Belt.Option.map(isDark(color), resp => ! resp);
+
+let getOpacityAux = (color: Type.color) : float => color.opacity;
+
+let getOpacity = color => Belt.Option.map(color, getOpacityAux);
+
+let getHueAux = (color: Type.color) : int => {
+  let (h, _s, _l) = Convert.toHslAux(color).value;
+  int_of_float(h);
+};
+
+let getHue = color => Belt.Option.map(color, getHueAux);
+
+let getLightnessAux = (color: Type.color) : int => {
+  let (_h, _s, l) = Convert.toHslAux(color).value;
+  int_of_float(l);
+};
+
+let getLightness = color => Belt.Option.map(color, getLightnessAux);

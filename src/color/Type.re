@@ -7,5 +7,5 @@ type spec =
 type color = {
   value: (float, float, float),
   opacity: float,
-  spec
+  spec,
 };
