@@ -7,7 +7,7 @@
     "url": "git+https://github.com/WhoAteDaCake/color-re.git"
   },
   "homepage": "https://github.com/WhoAteDaCake/color-re#readme",
-  "main": "index.js",
+  "main": "lib/js/src/Color.js",
   "keywords": [
     "reason",
     "bucklescript",
