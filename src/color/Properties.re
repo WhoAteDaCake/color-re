@@ -16,8 +16,7 @@ let luminosityAux = (color: Type.color) : float => {
 };
 
 /* http://www.w3.org/TR/WCAG20/#relativeluminancedef */
-let luminosity = color =>
-  Belt.Option.map(Convert.toRgb(color), luminosityAux);
+let luminosity = color => Belt.Option.map(Convert.toRgb(color), luminosityAux);
 
 let contrastAux = (lum1, lum2) =>
   if (lum1 > lum2) {
@@ -65,3 +64,10 @@ let getLightnessAux = (color: Type.color) : int => {
 };
 
 let getLightness = color => Belt.Option.map(color, getLightnessAux);
+
+let getSaturationAux = (color: Type.color) : int => {
+  let (_h, s, _l) = Convert.toHslAux(color).value;
+  int_of_float(s);
+};
+
+let getSaturation = color => Belt.Option.map(color, getSaturationAux);

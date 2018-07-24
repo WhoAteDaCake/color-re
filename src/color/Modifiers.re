@@ -28,7 +28,7 @@ let rgbModifer = (modifier, color: Type.color) : Type.color => {
 
 let opacityAux = (value: float, color: Type.color) : Type.color => {
   ...color,
-  opacity: inOpacityRange(value),
+  opacity: inOpacityRange(value)
 };
 
 let opacity = (value, color) => Belt.Option.map(color, opacityAux(value));
@@ -46,7 +46,7 @@ let fade = (ratio, color) => Belt.Option.map(color, fadeAux(ratio));
 let negate = color =>
   Belt.Option.map(
     color,
-    rgbModifer((r, g, b) => (255.0 -. r, 255.0 -. g, 255.0 -. b)),
+    rgbModifer((r, g, b) => (255.0 -. r, 255.0 -. g, 255.0 -. b))
   );
 
 let lighten = (ratio, color) =>
