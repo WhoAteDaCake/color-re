@@ -23,8 +23,9 @@
     "test": "yarn build && jest --config=jest.json --maxWorkers=4"
   },
   "files": [
-    "src/",
-    "bsconfig.json"
+    "lib/",
+    "bsconfig.json",
+    "README.md"
   ],
   "author": "whoatedacake",
   "license": "MIT",
