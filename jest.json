@@ -1,4 +1,4 @@
 {
   "verbose": true,
-  "testMatch": ["<rootDir>/lib/js/tests/*_test.js"]
+  "testMatch": ["<rootDir>/lib/js/tests/*_test.bs.js"]
 }
