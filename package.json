@@ -1,13 +1,13 @@
 {
   "name": "color-re",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "Reason color converter",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WhoAteDaCake/color-re.git"
   },
   "homepage": "https://github.com/WhoAteDaCake/color-re#readme",
-  "main": "index.js",
+  "main": "lib/js/src/Color.bs.js",
   "keywords": [
     "reason",
     "bucklescript",
@@ -23,15 +23,16 @@
     "test": "yarn build && jest --config=jest.json --maxWorkers=4"
   },
   "files": [
-    "src/",
-    "bsconfig.json"
+    "lib/",
+    "bsconfig.json",
+    "README.md"
   ],
   "author": "whoatedacake",
   "license": "MIT",
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
     "bs-jest": "^0.3.2",
-    "bs-platform": "^3.0.0",
+    "bs-platform": "^4.0.1",
     "jest": "^23.2.0"
   }
 }
