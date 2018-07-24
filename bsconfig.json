@@ -14,5 +14,6 @@
     }
   ],
   "refmt": 3,
-  "bs-dev-dependencies": ["@glennsl/bs-jest"]
+  "bs-dev-dependencies": ["@glennsl/bs-jest"],
+  "suffix": ".bs.js"
 }

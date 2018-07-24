@@ -32,6 +32,8 @@ Color.(fromRgb((200, 200, 200)) |> contrast(fromHex("#aaafff"))) |> Belt.Option.
 
 ## Features
 
+Pretty much every function has `Aux` caunterpart, which will work on pure `color` type.
+
 ### Creation
 
 Supported interfaces for creating `color` type
